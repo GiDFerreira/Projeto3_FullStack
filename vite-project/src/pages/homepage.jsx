@@ -1,6 +1,27 @@
 import React from 'react'
+import { useState } from 'react'
+import { Slide } from 'react-slideshow-image'
+import 'react-slideshow-image/dist/styles.css';
+
 
 export function HomePage() {
+
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+
+    function openLoginAccess(){
+        setIsLoginModalOpen(true)
+    }
+
+    function closeLoginAccess(){
+        setIsLoginModalOpen(false)
+    }
+
+    const slideImages = [
+        './ratattouile.jpg',
+        './tangled.jpg',
+        './tangled1.jpg'
+    ]
+
     return (
         <>
             <nav className="bg-zinc-100">
@@ -48,7 +69,7 @@ export function HomePage() {
                             <div className="flex-shrink-0">
                             <img
                                 className="h-8 w-auto"
-                                src="{D}"
+                                src="./D.png"
                                 alt="disney"
                             />
                             </div>
@@ -80,24 +101,48 @@ export function HomePage() {
                     </div>
                 </div>
             </nav>
-            <div className="max-w-full h-full py-14 mx-auto space-y-10">
-                <div className="px-36 bg-zinc-100 flex flex-col items-center space-y-8 space-x-10">
-                    <p className="flex items-center text-zinc-950 font-medium text-6xl">
-                        Search your favorites characters
-                    </p>
-                    <p className="flex items-center text-zinc-950 font-medium">
-                        Explore our extensive collection of Disney characters and discover detailed information about each one of them. Sign in to add new ones to your list!
-                    </p>
-                    <div className="flex py-6 space-x-8">
-                        <button className="text-black hover:bg-rose-900 hover:text-white px-3 py-2 rounded-3xl text-sm font-medium">
-                            Loggin
-                        </button>
-                        <button className="text-black hover:bg-rose-900 hover:text-white px-3 py-2 rounded-3xl text-sm font-medium">
-                            Search Characters
-                        </button>
+            <div className="relative min-h-[calc(100vh-4rem)]">
+                <div className="absolute inset-0 z-0">
+                        <Slide easing="ease" duration={10000} transitionDuration={1000} arrows={false}>
+                            {slideImages.map((each, index) => (
+                                <div key={index} className="h-full">
+                                    <img 
+                                        src={each} 
+                                        alt={`Slide ${index + 1}`} 
+                                        className="object-cover w-full h-full"
+                                    />
+                                </div>
+                            ))}
+                        </Slide>
+                    </div>
+                <div className="relative z-10 w-full h-full flex items-center justify-center p-10">
+                    <div className="bg-white bg-opacity-50 p-8 rounded-2xl shadow-lg w-full max-w-md">
+                        <h2 className="text-2xl font-semibold mb-6 text-black">Login</h2>
+                        <h2 className="text-sm font-semibold mb-6  text-zinc-600">Sign in to search about your favorites characters</h2>
+                        <form>
+                            <div className="mb-4">
+                                <label className="block text-black text-sm font-bold mb-2" htmlFor="username">
+                                    Email
+                                </label>
+                                <input className="shadow appearance-none border rounded-3xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-center" id="username" type="text" placeholder="Email Adress"/>
+                            </div>
+                            <div className="mb-6">
+                                <label className="block text-black text-sm font-bold mb-2" htmlFor="password">
+                                    Password
+                                </label>
+                                <input className="shadow appearance-none border rounded-3xl w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline text-center" id="password" type="password" placeholder="Password"/>
+                                <span className=''>Do not have an account? Create Here</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <button className="bg-rose-900 text-pink-300 hover:bg-rose-300 hover:text-white px-3 py-2 rounded-3xl text-sm font-medium">
+                                    Sign In now
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
+        
         </>
         
     )

@@ -1,0 +1,23 @@
+<div className="max-w-full h-full py-14 mx-auto space-y-10">
+                <div className="px-36 bg-zinc-100 flex flex-col items-center space-y-8 space-x-10">
+                    <p className="flex items-center text-zinc-950 font-medium text-6xl">
+                        Search your favorites characters
+                    </p>
+                    <p className="flex items-center text-zinc-950 font-medium">
+                        Explore our extensive collection of Disney characters and discover detailed information about each one of them. Sign in to add new ones to your list!
+                    </p>
+                    <div className="flex py-6 space-x-10">
+                        <button className="text-black hover:bg-rose-900 hover:text-white px-3 py-2 rounded-3xl text-sm font-medium">
+                            Loggin
+                        </button>
+                        <button className="text-black hover:bg-rose-900 hover:text-white px-3 py-2 rounded-3xl text-sm font-medium">
+                            Search Characters
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <div>
+
+                    </div>
+                </div>
+            </div>
