@@ -1,23 +1,48 @@
-<div className="max-w-full h-full py-14 mx-auto space-y-10">
-                <div className="px-36 bg-zinc-100 flex flex-col items-center space-y-8 space-x-10">
-                    <p className="flex items-center text-zinc-950 font-medium text-6xl">
-                        Search your favorites characters
-                    </p>
-                    <p className="flex items-center text-zinc-950 font-medium">
-                        Explore our extensive collection of Disney characters and discover detailed information about each one of them. Sign in to add new ones to your list!
-                    </p>
-                    <div className="flex py-6 space-x-10">
-                        <button className="text-black hover:bg-rose-900 hover:text-white px-3 py-2 rounded-3xl text-sm font-medium">
-                            Loggin
-                        </button>
-                        <button className="text-black hover:bg-rose-900 hover:text-white px-3 py-2 rounded-3xl text-sm font-medium">
-                            Search Characters
-                        </button>
+<nav className="bg-zinc-100">
+                <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+                    <div className="relative flex items-center justify-between h-16">
+                        <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+                            <div className="flex-shrink-0">
+                            <img
+                                className="h-8 w-auto"
+                                src="./D.png"
+                                alt="disney"
+                            />
+                            </div>
+                            <div className="hidden sm:block sm:ml-6">
+                                <div className="flex space-x-4">
+                                    <a href="#"
+                                    className="text-black hover:bg-rose-900 hover:text-white px-3 py-2 rounded-3xl text-sm font-medium">
+                                    Home
+                                    </a>
+                                    <a href="#"
+                                    className="text-black hover:bg-rose-900 hover:text-white px-3 py-2 rounded-3xl text-sm font-medium">
+                                    Search
+                                    </a>
+                                    <a href="#"
+                                    className="text-black hover:bg-rose-900 hover:text-white px-3 py-2 rounded-3xl text-sm font-medium">
+                                    Characters
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex items-center space-x-4 ">
+                                <button onClick={handleLogout} className="text-black hover:bg-rose-900 hover:text-white border-rose-900 border px-3 py-2 rounded-3xl text-sm font-medium">
+                                    Logout
+                                </button>
+                        </div>  
                     </div>
                 </div>
-                <div>
-                    <div>
-
+            </nav>      
+            <div className="px-4 py-4 flex items-center justify-center z-50 w-full h-auto bg-slate-100 bg-opacity-25 pt-5">
+                <div className="flex flex-col items-center justify-center pt-1">
+                    <div className="flex items-center space-x-2">
+                        <input type="search" 
+                        name="searchinput" 
+                        id="searchinput" 
+                        placeholder="Search your character here..."
+                        className="flex items-center shadow appearance-none border rounded-3xl w-80 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-left" />
+                        <button type="submit" className="shadow apparence-none bg-rose-900 text-pink-300 hover:bg-rose-300 hover:text-white  px-3 py-2 rounded-3xl text-sm font-medium"><SearchIcon className="size-5" /></button>
                     </div>
                 </div>
-            </div>
+            </div>  
