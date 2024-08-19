@@ -18,7 +18,7 @@ export const CharacterApiProvider = ({ children }) => {
         const data = await response.json();
         return data.data
       } catch (error) {
-        console.error(error);
+        console.error("Erro ao conectar com a API", error);
         throw error;
       } finally {
         setLoading(false);
