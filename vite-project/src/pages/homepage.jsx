@@ -18,13 +18,35 @@ export function HomePage({setIsLoggedIn}) {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         // Validação simples: verificar se os campos não estão vazios
         if (username && password) {
-            setIsLoggedIn(true);
-            navigate("/search");
+            try{
+                const response = await fetch('http://localhost:5173', {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: username, password: password
+                    }),
+                });
+        
+                const data = await response.json();
+        
+                if (response.ok && data.token) {
+                    localStorage.setItem('token', data.token);
+                    setIsLoggedIn(true);
+                    navigate("/search");
+                } else {
+                    alert(data.message || "Invalid credentials");
+                }
+            } catch (error) {
+                alert("An error occurred while trying to log in. Please try again later.");
+                console.log(error)
+            }
         } else {
-            alert("Por favor, preencha todos os campos.");
+            alert('Please');
         }
     };
 

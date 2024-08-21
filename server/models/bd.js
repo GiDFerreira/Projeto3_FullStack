@@ -10,7 +10,7 @@ const userModel = sequelize.define('User', {
     idUser: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
-        primaryKey: true, // Corrigido
+        primaryKey: true,
     },
     email: {
         type: DataTypes.STRING,
@@ -33,7 +33,6 @@ const characterModel = sequelize.define('Character', {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    // Outros campos relevantes...
 });
 
 // Definição do relacionamento entre User e Character
