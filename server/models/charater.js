@@ -2,7 +2,7 @@ const { characterModel } = require('./bd');
 
 const allowedLimits = [5, 10, 30];
 
-modules.exports = {
+module.exports = {
     async createCharacter(characterData) {
         const character = await characterModel.create(characterData);
         return character;

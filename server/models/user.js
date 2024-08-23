@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const { userModel } = require('./bd');
 
-modules.exports = {
+module.exports = {
     async createUser(userData) {
         
         const saltRounds = 10;

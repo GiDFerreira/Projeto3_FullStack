@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
 
-modules.exports = {
+module.exports = {
     validateAcess: (req, res, next) => {
-        const userToken = req.headers['Authorization'] || "";
+        const userToken = req.headers['authorization'] || "";
         const token = userToken && userToken.split(" ")[1];
 
         if (!userToken) {
