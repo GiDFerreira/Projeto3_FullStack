@@ -5,7 +5,6 @@ import 'react-slideshow-image/dist/styles.css';
 import { useNavigate } from 'react-router-dom';
 
 
-
 export function HomePage({setIsLoggedIn}) {
 
     const slideImages = [
@@ -14,17 +13,21 @@ export function HomePage({setIsLoggedIn}) {
         './tangled1.jpg'
     ]
 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    
     const navigate = useNavigate();
 
-    const token = localStorage.getItem('token');
+    
 
     const handleLogin = async () => {
-        // Validação simples: verificar se os campos não estão vazios
+        console.log("Attempting to login...");
+        console.log("Username:", username);
+        console.log("Password:", password);
+        
         if (username && password) {
             try{
-                const response = await fetch('http://localhost:3000/login', {
+                const response = await fetch('http://localhost:3002/login', {
                     method: 'POST',
                     headers: {
                         'Content-type': 'application/json',
@@ -33,26 +36,29 @@ export function HomePage({setIsLoggedIn}) {
                         email: username, password: password
                     }),
                 });
+                console.log("Response status:", response.status);
         
                 const data = await response.json();
+                console.log("Response data:", data);
         
                 if (response.ok && data.token) {
                     localStorage.setItem('token', data.token);
                     setIsLoggedIn(true);
+                    console.log("Navigating to /search");
                     navigate("/search");
                 } else {
                     alert(data.message || "Invalid credentials");
                 }
             } catch (error) {
                 alert("An error occurred while trying to log in. Please try again later.");
-                console.log(error)
+                console.log("Error:", error)
             }
         } else {
             alert('Please fill in both username and password fields');
         }
     };
 
-
+    
 
     return (
         <>

@@ -4,12 +4,13 @@ var express = require('express');
 var path = require('path');
 const cors = require('cors');
 const http = require('http');
-const port = process.env.PORT;
+const port = process.env.PORT || 3002;
 
 
 // Importação das rotas
 const loginRoutes = require('./routes/login');
 const characterRoutes = require('./routes/characterIndex');
+const { initializeUsers } = require('./models/user'); 
 
 
 // Variável de ambiente
@@ -19,7 +20,8 @@ var app = express();
 
 //Cors
 app.use(cors({
-    origin: 'http://localhost:5173', // Permitir requisições do frontend
+    origin: `http://localhost:5173`,
+    methods: `GET,POST,PUT,DELETE`
 }));
 
 app.use(express.json());
@@ -46,10 +48,19 @@ app.use(function(err, req, res, next) {
 });
 
 
+
 //Server Port
 const httpServer = http.createServer(app);
 
-httpServer.listen(port, () => {
+httpServer.listen(port, async () => {
     console.log("Listening on: " + port);
+
+    try {
+        // Inicializa o banco de dados e cria usuários
+        await initializeUsers();
+        console.log("Users initialized successfully.");
+    } catch (error) {
+        console.error("Error during user initialization:", error);
+    }
 })
 

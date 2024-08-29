@@ -2,7 +2,7 @@ import React, { useState } from "react"
 
 
 
-export function AddCharater(){
+export function AddCharater({setIsLoggedIn}){
 
     const [characterName, setCharacterName] = useState('');
     const [characterImage, setCharacterImage] = useState(null);
@@ -29,6 +29,13 @@ export function AddCharater(){
         setMovie('');
         setSeries('');
     };
+
+    const handleLogout = () =>{
+        localStorage.removeItem('token');
+        setIsLoggedIn(false);
+        navigate('/');
+    };
+
 
 
     return(
@@ -63,7 +70,7 @@ export function AddCharater(){
                                 </div>
                             </div>
                             <div className="flex items-center space-x-4 ">
-                                    <button  className="text-black hover:bg-rose-900 hover:text-white border-rose-900 transition duration-300 border px-3 py-2 rounded-3xl text-sm font-medium">
+                                    <button  onClick={handleLogout} className="text-black hover:bg-rose-900 hover:text-white border-rose-900 transition duration-300 border px-3 py-2 rounded-3xl text-sm font-medium">
                                         Logout
                                     </button>
                             </div>  

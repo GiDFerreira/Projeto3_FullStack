@@ -32,7 +32,7 @@ router.get('/character', async(req,res) => {
 });
 
 //Listar personagem por id
-router.get('/character', async(req, res) => {
+router.get('/character/:id', async(req, res) => {
     try {
         const character = await characterService.findCharacter(req.params.id);
         if (character) {

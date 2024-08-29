@@ -4,14 +4,16 @@ import { SearchIcon } from "lucide-react"
 import { CharacterApiContext } from "../context/disneyApi";
 
 
-export function Search(){
+export function Search({setIsLoggedIn}){
 
     const navigate = useNavigate();
 
-    const handleLogout = () => {
+    const handleLogout = () =>{
+        localStorage.removeItem('token');
         setIsLoggedIn(false);
-        navigate("/");
+        navigate('/');
     };
+
 
     const handleNavigation = () => {
         navigate('/add-character')

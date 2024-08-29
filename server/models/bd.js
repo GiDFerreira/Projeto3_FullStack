@@ -16,7 +16,7 @@ const userModel = sequelize.define('User', {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    senha: {
+    password: {
         type: DataTypes.STRING,
         allowNull: false,
     },
@@ -29,7 +29,7 @@ const characterModel = sequelize.define('Character', {
         autoIncrement: true,
         primaryKey: true,
     },
-    nome: {
+    name: {
         type: DataTypes.STRING,
         allowNull: false,
     },

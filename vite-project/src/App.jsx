@@ -8,7 +8,7 @@ import { CharacterApiProvider } from './context/disneyApi';
 
 
 function App() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
 
     return (
         <CharacterApiProvider>
@@ -17,11 +17,11 @@ function App() {
                     <Route path="/" element={<HomePage setIsLoggedIn={setIsLoggedIn} />} />
                     <Route 
                         path="/search" 
-                        element={isLoggedIn ? <Search /> : <Navigate to="/" />} 
+                        element={isLoggedIn ? <Search setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" />} 
                     />
                     <Route 
                         path="/add-character" 
-                        element={isLoggedIn ? <AddCharater /> : <Navigate to="/" />} 
+                        element={isLoggedIn ? <AddCharater setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" />} 
                     />
                 </Routes>
             </Router>
