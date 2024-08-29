@@ -18,6 +18,8 @@ export function HomePage({setIsLoggedIn}) {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
+    const token = localStorage.getItem('token');
+
     const handleLogin = async () => {
         // Validação simples: verificar se os campos não estão vazios
         if (username && password) {
@@ -26,7 +28,6 @@ export function HomePage({setIsLoggedIn}) {
                     method: 'POST',
                     headers: {
                         'Content-type': 'application/json',
-                        'Authorization': `Bearer ${token}`
                     },
                     body: JSON.stringify({
                         email: username, password: password
@@ -47,7 +48,7 @@ export function HomePage({setIsLoggedIn}) {
                 console.log(error)
             }
         } else {
-            alert('Please');
+            alert('Please fill in both username and password fields');
         }
     };
 
@@ -55,7 +56,6 @@ export function HomePage({setIsLoggedIn}) {
 
     return (
         <>
-        
         <nav className="bg-zinc-100">
                 <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
                     <div className="relative flex items-center justify-between h-16">

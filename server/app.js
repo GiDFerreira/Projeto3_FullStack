@@ -1,13 +1,16 @@
+require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 const cors = require('cors');
+const http = require('http');
+const port = process.env.PORT;
 
 
 // Importação das rotas
 const loginRoutes = require('./routes/login');
 const characterRoutes = require('./routes/characterIndex');
-require('dotenv').config();
+
 
 // Variável de ambiente
 const secret = process.env.SECRET;
@@ -42,4 +45,11 @@ app.use(function(err, req, res, next) {
     res.json({ message: "An undefined error has occurred" });
 });
 
-module.exports = app;
+
+//Server Port
+const httpServer = http.createServer(app);
+
+httpServer.listen(port, () => {
+    console.log("Listening on: " + port);
+})
+
