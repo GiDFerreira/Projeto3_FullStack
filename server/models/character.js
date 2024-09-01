@@ -4,8 +4,24 @@ const allowedLimits = [5, 10, 30];
 
 module.exports = {
     async createCharacter(characterData) {
-        const character = await characterModel.create(characterData);
-        return character;
+        try {
+            // Certifique-se de que os campos correspondem ao modelo do Sequelize
+            console.log('Dados recebidos para criação do personagem:', characterData);
+
+            const character = await characterModel.create({
+                characterName: characterData.characterName,  // Ajuste conforme o campo correto no seu modelo
+                image: characterData.image,
+                series: characterData.series,
+                movies: characterData.movies,
+            });
+
+            console.log('Personagem criado no banco de dados:', character);
+            return character;
+            
+        } catch (error) {
+            console.error('Erro ao salvar no banco de dados:', error.message);
+            throw error; // Lança o erro para ser tratado na camada superior
+        }
     },
 
     async listCharacter(limit = 10, page = 1) {

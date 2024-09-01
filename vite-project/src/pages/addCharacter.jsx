@@ -6,15 +6,16 @@ export function AddCharater({setIsLoggedIn}){
 
     const [characterName, setCharacterName] = useState('');
     const [characterImage, setCharacterImage] = useState(null);
-    const [movie, setMovie] = useState('');
+    const [movies, setMovies] = useState('');
     const [series, setSeries] = useState('');
 
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
-        if (file) {
-            setCharacterImage(file); // Atualiza o estado com o arquivo selecionado
+        if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
+            setCharacterImage(file);
         } else {
-            console.warn("Nenhum arquivo foi selecionado.");
+            alert("Please select a valid image file (JPEG or PNG).");
+            setCharacterImage(null); // Reset if invalid file is selected
         }
     };
 
@@ -23,7 +24,7 @@ export function AddCharater({setIsLoggedIn}){
         const formData = new FormData();
         formData.append('characterName', characterName);
         formData.append('characterImage', characterImage);
-        formData.append('movie', movie);
+        formData.append('movies', movies);
         formData.append('series', series);
 
         try{
@@ -51,7 +52,7 @@ export function AddCharater({setIsLoggedIn}){
         // Reseta o formulário após enviar
         setCharacterName('');
         setCharacterImage(null);
-        setMovie('');
+        setMovies('');
         setSeries('');
     };
 
@@ -133,7 +134,10 @@ export function AddCharater({setIsLoggedIn}){
                                 id="characterName"
                                 className="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-900"
                                 value={characterName}
-                                onChange={(e) => setCharacterName(e.target.value)}
+                                onChange={(e) => {
+                                    console.log(e.target.value)
+                                    setCharacterName(e.target.value)
+                                } }
                                 placeholder="Enter character name"
                             />
                         </div>
@@ -158,8 +162,8 @@ export function AddCharater({setIsLoggedIn}){
                                 type="text"
                                 id="movie"
                                 className="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-900"
-                                value={movie}
-                                onChange={(e) => setMovie(e.target.value)}
+                                value={movies}
+                                onChange={(e) => setMovies(e.target.value)}
                                 placeholder="Enter movie(s)"
                             />
                         </div>
@@ -181,7 +185,6 @@ export function AddCharater({setIsLoggedIn}){
                         <button
                             type="submit"
                             className="w-full bg-rose-900 text-white py-2 rounded-xl hover:bg-rose-700 transition duration-300"
-                            onClick={handleSubmit}
                         >
                             Add Character
                         </button>

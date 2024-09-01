@@ -7,10 +7,13 @@ const characterService = require('../models/character');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
+        console.log('Destination folder:', 'uploads/');
         cb(null, 'uploads/');
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname)); // Nome único para o arquivo
+        const uniqueFilename = Date.now() + path.extname(file.originalname);
+        console.log('Generated filename:', uniqueFilename);
+        cb(null, uniqueFilename); // Nome único para o arquivo
     }
 });
 
@@ -23,30 +26,32 @@ router.post('/', upload.single('characterImage'), async (req, res) => {
     console.log('File received:', req.file);
     console.log('Body received:', req.body);
     try {
-        const { name, series, movies } = req.body;
+        const { characterName, series, movies } = req.body;
         const imagePath = req.file ? req.file.path : null;
 
-        if (!name || !series || !movies || !imagePath) {
-            throw new Error('Missing required fields.');
-        }
-
-        const newCharacter = await characterService.createCharacter({
-            name: name,
-            image: req.body.imagePath,
-            series: series,
-            movies: movies,
-        });
-
         // Logs para verificar os dados recebidos
-        console.log('Nome do Personagem:', name);
+        console.log('Nome do Personagem:', characterName);
         console.log('Filmes:', movies);
         console.log('Séries:', series);
         console.log('Caminho da Imagem:', imagePath);
 
-        res.json({ message: 'Character added successfully!', character: newCharacter });
+        if (!characterName || !series || !movies) {
+            throw new Error('Missing required fields.');
+        }
+        
+        const characterData = {
+            characterName: req.body.characterName,  // Deve bater com o campo esperado
+            image: req.file.path,  // Verifique se o path está correto
+            series: req.body.series,
+            movies: req.body.movies,
+        };
+
+        const newCharacter = await characterService.createCharacter(characterData);
+        res.status(201).json({ message: 'Character added successfully!', character: newCharacter });
+        console.log('Personagem criado:', newCharacter);
         
     } catch (error) {
-
+        console.error('Error creating character:', error);
         res.status(400).json({
             message: 'Error creating character', error: error.message
         });

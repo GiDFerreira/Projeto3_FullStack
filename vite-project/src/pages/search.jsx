@@ -36,7 +36,7 @@ export function Search({setIsLoggedIn}){
 
         try { 
             const data = await Preview(disneyCharacter)
-            if (data.length === 0) {
+            if (!data.length === 0) {
                 setErrorMessage("Nenhum personagem encontrado.")
             } else {
                 setCharacters(data)
