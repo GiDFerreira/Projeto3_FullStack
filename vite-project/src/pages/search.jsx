@@ -19,9 +19,10 @@ export function Search({setIsLoggedIn}){
         navigate('/add-character')
     }
 
-    const [errorMessage, setErrorMessage] = useState("")
-
-    const { Preview, characters = [], loading } = useContext(CharacterApiContext);
+    
+    const [errorMessage, setErrorMessage] = useState("");
+    const [characters, setCharacters] = useState([]);  // Definindo o estado characters
+    const { Preview, loading } = useContext(CharacterApiContext);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -38,8 +39,8 @@ export function Search({setIsLoggedIn}){
             if (data.length === 0) {
                 setErrorMessage("Nenhum personagem encontrado.")
             } else {
-                
-                setErrorMessage("Puts")
+                setCharacters(data)
+                setErrorMessage("")
             }
             
              

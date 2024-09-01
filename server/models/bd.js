@@ -33,6 +33,18 @@ const characterModel = sequelize.define('Character', {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    image: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    series: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    movies: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    }
 });
 
 // Definição do relacionamento entre User e Character
@@ -40,7 +52,7 @@ characterModel.belongsTo(userModel);  // Cada personagem pertence a um usuário
 userModel.hasMany(characterModel);    // Um usuário pode ter muitos personagens
 
 // Sincronização com o banco de dados
-sequelize.sync({ force: true })
+sequelize.sync({ alter: true })
     .then(() => {
         console.log('Models synchronized with the database.');
     })

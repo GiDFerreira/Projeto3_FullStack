@@ -1,15 +1,52 @@
 const express = require('express');
 const router = express.Router();
-const characterService = require('../models/charater');
+const multer = require('multer');
+const path = require('path');
+const characterService = require('../models/character');
+
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname)); // Nome único para o arquivo
+    }
+});
+
+const upload = multer({ storage: storage });
+
 
 //Salvar Personagem
-router.post('/character', async (req, res) => {
+router.post('/', upload.single('characterImage'), async (req, res) => {
+    console.log('Rota /character acessada');
+    console.log('File received:', req.file);
+    console.log('Body received:', req.body);
     try {
-        const newCharater = await characterService.createCharater(req.body);
-        res.json({
-            character: newCharater
+        const { name, series, movies } = req.body;
+        const imagePath = req.file ? req.file.path : null;
+
+        if (!name || !series || !movies || !imagePath) {
+            throw new Error('Missing required fields.');
+        }
+
+        const newCharacter = await characterService.createCharacter({
+            name: name,
+            image: req.body.imagePath,
+            series: series,
+            movies: movies,
         });
+
+        // Logs para verificar os dados recebidos
+        console.log('Nome do Personagem:', name);
+        console.log('Filmes:', movies);
+        console.log('Séries:', series);
+        console.log('Caminho da Imagem:', imagePath);
+
+        res.json({ message: 'Character added successfully!', character: newCharacter });
+        
     } catch (error) {
+
         res.status(400).json({
             message: 'Error creating character', error: error.message
         });
@@ -17,7 +54,7 @@ router.post('/character', async (req, res) => {
 });
 
 //Listar personagem geral
-router.get('/character', async(req,res) => {
+router.get('/', async(req,res) => {
     try{
         const limit = parseInt(req.query.limit) || 10;
         const page = parseInt(req.query.limit) || 1;
@@ -32,7 +69,7 @@ router.get('/character', async(req,res) => {
 });
 
 //Listar personagem por id
-router.get('/character/:id', async(req, res) => {
+router.get('/:id', async(req, res) => {
     try {
         const character = await characterService.findCharacter(req.params.id);
         if (character) {
@@ -50,7 +87,7 @@ router.get('/character/:id', async(req, res) => {
 });
 
 //Atualizar Personagem
-router.put('/character/:id', async (req,res) => {
+router.put('/:id', async (req,res) => {
     try{
         const characterUpdate = await characterService.characterUpdate(req.params.id, req.body);
         if (characterUpdate) {
@@ -64,7 +101,7 @@ router.put('/character/:id', async (req,res) => {
 });
 
 //Deletar personagem
-router.delete('/character/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         const characterDelete = await characterService.characterDelete(req.params.id);
         if (characterDelete) {

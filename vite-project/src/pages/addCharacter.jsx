@@ -10,19 +10,44 @@ export function AddCharater({setIsLoggedIn}){
     const [series, setSeries] = useState('');
 
     const handleImageUpload = (e) => {
-        setCharacterImage(e.target.files[0]);
+        const file = e.target.files[0];
+        if (file) {
+            setCharacterImage(file); // Atualiza o estado com o arquivo selecionado
+        } else {
+            console.warn("Nenhum arquivo foi selecionado.");
+        }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Aqui você pode adicionar a lógica para enviar os dados para o backend ou salvar o personagem.
-        console.log({
-            characterName,
-            characterImage,
-            movie,
-            series
-        });
-        alert('Character added successfully!');
+        const formData = new FormData();
+        formData.append('characterName', characterName);
+        formData.append('characterImage', characterImage);
+        formData.append('movie', movie);
+        formData.append('series', series);
+
+        try{
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
+
+            const response = await fetch('http://localhost:3002/character', {
+                method: 'POST',
+                body: formData,
+            });
+            
+            const data = await response.json();
+            if (response.ok) {
+                alert('Character added successfully!');
+            } else {
+                alert(data.message || 'Error adding character');
+            }
+
+        } catch (error) {
+            alert('An error occurred while adding the character. Please try again later.');
+            console.error(error);
+        }
+        
         // Reseta o formulário após enviar
         setCharacterName('');
         setCharacterImage(null);
@@ -78,7 +103,6 @@ export function AddCharater({setIsLoggedIn}){
                     </div>
                 </nav>
             <div className="flex max-w-4xl mx-auto py-16">
-                {/* Esquerda: Auxiliares */}
                 <div className="w-1/2 bg-zinc-100 p-8 rounded-l-2xl shadow-lg">
                     <h2 className="text-2xl font-semibold text-rose-900 mb-6">How to Add a Character</h2>
                     <ul className="space-y-4 text-black">
@@ -97,7 +121,6 @@ export function AddCharater({setIsLoggedIn}){
                     </ul>
                 </div>
 
-                {/* Direita: Formulário */}
                 <div className="w-1/2 bg-white p-8 rounded-r-2xl shadow-lg">
                     <h2 className="text-2xl font-semibold text-rose-900 mb-6">Add a New Character</h2>
                     <form onSubmit={handleSubmit} className="space-y-4">
@@ -158,6 +181,7 @@ export function AddCharater({setIsLoggedIn}){
                         <button
                             type="submit"
                             className="w-full bg-rose-900 text-white py-2 rounded-xl hover:bg-rose-700 transition duration-300"
+                            onClick={handleSubmit}
                         >
                             Add Character
                         </button>

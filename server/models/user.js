@@ -1,4 +1,3 @@
-// no arquivo './db.js' ou onde você define e exporta a função
 const bcrypt = require('bcrypt');
 const { userModel, sequelize } = require('./bd');
 
@@ -35,12 +34,12 @@ async function initializeUsers() {
         console.log("Users created successfully: ", user1, user2);
     } catch (error) {
         console.error("Error during installation", error);
-        throw error;  // Lance o erro para ser capturado na chamada
+        throw error;  
     }
 }
 
 module.exports = {
     createUser,
     getUserByEmail,
-    initializeUsers,  // Certifique-se de exportar a função
+    initializeUsers,  
 };

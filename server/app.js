@@ -4,8 +4,10 @@ var express = require('express');
 var path = require('path');
 const cors = require('cors');
 const http = require('http');
+const compression = require ('compression');
 const port = process.env.PORT || 3002;
-
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 // Importação das rotas
 const loginRoutes = require('./routes/login');
@@ -28,6 +30,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(compression());
+
 // Configuração das rotas
 app.use('/', loginRoutes);
 app.use('/character', characterRoutes);
@@ -39,12 +43,13 @@ app.use(function(req, res, next) {
 
 // Error Handler
 app.use(function(err, req, res, next) {
+    console.log(err);
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
 
     // Render the error page
     res.status(err.status || 500);
-    res.json({ message: "An undefined error has occurred" });
+    res.json({ message: err.message || "An undefined error has occurred" });
 });
 
 
