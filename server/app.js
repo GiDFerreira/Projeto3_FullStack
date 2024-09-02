@@ -8,6 +8,7 @@ const compression = require ('compression');
 const port = process.env.PORT || 3002;
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
+const redisCache = require('./helpers/redisCache');
 
 // Importação das rotas
 const loginRoutes = require('./routes/login');
@@ -31,6 +32,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(compression());
+
+//Redis
+(async () => {
+    try {
+        const client = await redisClient;  // Aguarda o cliente Redis ser conectado
+        console.log('Redis client connected successfully');
+    } catch (err) {
+        console.error('Failed to connect to Redis:', err);
+    }
+})();
+
 
 // Configuração das rotas
 app.use('/', loginRoutes);

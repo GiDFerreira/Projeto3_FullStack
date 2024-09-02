@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const characterService = require('../models/character');
+const redisCache = require('../helpers/redisCache');
 
 
 const storage = multer.diskStorage({
@@ -18,6 +19,27 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
+const cache = async (req, res, next) => {
+    const { id } = req.params;  // Supondo que você está buscando personagens por ID
+    const cacheKey = `character:${id}`;
+
+    try {
+        // Tenta obter dados do cache
+        const cachedData = await redisCache.get(cacheKey);
+
+        if (cachedData) {
+            // Se houver dados no cache, retorna-os
+            return res.status(200).json(JSON.parse(cachedData));
+        }
+
+        // Caso contrário, continua para o próximo middleware
+        next();
+    } catch (error) {
+        console.error('Cache middleware error:', error);
+        next();  // Continua para o próximo middleware, mesmo que o cache falhe
+    }
+};
 
 
 //Salvar Personagem
@@ -74,22 +96,29 @@ router.get('/', async(req,res) => {
 });
 
 //Listar personagem por id
-router.get('/:id', async(req, res) => {
+router.get('/:id', cache, async (req, res) => {
+    const { id } = req.params;
+
     try {
-        const character = await characterService.findCharacter(req.params.id);
-        if (character) {
-            res.json({ character: character });
-        } else {
-            res.status(404).json({
-                message: 'Character not found'
-            })
+        const character = await characterService.findCharacter(id);
+
+        if (!character) {
+            return res.status(404).json({ message: 'Character not found' });
         }
+
+        // Armazena o dado no cache
+        await redisCache.set(`character:${id}`, JSON.stringify(character), {
+            EX: 3600  // Expiração em segundos
+        });
+
+        res.status(200).json(character);
     } catch (error) {
-        res.status(500).json({
-            message: 'Error getting character'
-        })
+        console.error('Error fetching character:', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
+
 });
+
 
 //Atualizar Personagem
 router.put('/:id', async (req,res) => {
