@@ -36,7 +36,7 @@ app.use(compression());
 //Redis
 (async () => {
     try {
-        const client = await redisClient;  // Aguarda o cliente Redis ser conectado
+        const client = await redisCache;  // Aguarda o cliente Redis ser conectado
         console.log('Redis client connected successfully');
     } catch (err) {
         console.error('Failed to connect to Redis:', err);
