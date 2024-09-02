@@ -24,26 +24,12 @@ module.exports = {
         }
     },
 
-    async listCharacter(limit = 10, page = 1) {
-        if(!allowedLimits.includes(limit)){
-            throw new Error('Invalid limit. Allowed values: 5, 10, 30 ');
-        }
-
-        const offset = (page - 1) * limit;
-        const character = await characterModel.findAll({
-            limit: limit,
-            offset: offset,
-        });
-
-        return character;
-    },
-
     async findCharacter(id) {
         const character = await characterModel.findByPk(id);
         return character;
     },
 
-    async updateCharacter(characterId, newData) {
+    /*async updateCharacter(characterId, newData) {
         const [update] = await characterModel.update(newData, {
             where: { id:characterId },
         });
@@ -62,6 +48,6 @@ module.exports = {
         });
 
         return characterDeleted;
-    },
+    },*/
 
 };

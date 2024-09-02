@@ -1,0 +1,15 @@
+GET /character 404 23 - 63.139 ms {}
+GET /character 404 23 - 17.084 ms {}
+GET /character 404 23 - 16.829 ms {}
+GET /character 404 23 - 23.677 ms {}
+GET /character 404 23 - 9.184 ms {}
+GET /character 404 23 - 19.777 ms {}
+GET /character 404 23 - 14.954 ms {}
+GET /character 404 23 - 12.303 ms {}
+GET /character 404 23 - 25.487 ms {}
+GET /character 404 23 - 15.306 ms {}
+GET /character 404 23 - 9.496 ms {}
+GET /character 404 23 - 12.885 ms {}
+GET /character 404 23 - 14.359 ms {}
+GET /favicon.ico 404 23 - 8.018 ms {}
+GET /search 404 23 - 26.996 ms {}

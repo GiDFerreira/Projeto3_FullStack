@@ -1,9 +1,11 @@
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom";
+
 
 
 
 export function AddCharater({setIsLoggedIn}){
-
+    const navigate = useNavigate();
     const [characterName, setCharacterName] = useState('');
     const [characterImage, setCharacterImage] = useState(null);
     const [movies, setMovies] = useState('');
@@ -32,7 +34,7 @@ export function AddCharater({setIsLoggedIn}){
                 console.log(`${key}: ${value}`);
             }
 
-            const response = await fetch('http://localhost:3002/character', {
+            const response = await fetch('https://localhost:3002/character', {
                 method: 'POST',
                 body: formData,
             });
@@ -55,6 +57,10 @@ export function AddCharater({setIsLoggedIn}){
         setMovies('');
         setSeries('');
     };
+
+    const handleNavigation = () => {
+        navigate('/search-your-character');
+    }
 
     const handleLogout = () =>{
         localStorage.removeItem('token');
@@ -189,6 +195,12 @@ export function AddCharater({setIsLoggedIn}){
                             Add Character
                         </button>
                     </form>
+                    <button
+                            onClick={handleNavigation}
+                            className="mt-4 w-full bg-rose-500 text-white py-2 rounded-xl hover:bg-rose-400 transition duration-300"
+                        >
+                            Search Characters
+                    </button>
                 </div>
             </div>
             <footer className="w-full py-4 border-t border-gray-300 shadow-black flex items-center justify-between bg-white">

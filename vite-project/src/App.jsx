@@ -4,6 +4,8 @@ import { HomePage } from './pages/homepage';
 import { Search } from './pages/search';
 import { AddCharater } from './pages/addCharacter';
 import { CharacterApiProvider } from './context/disneyApi';
+import { SearchYourCharacter } from './pages/searchYourCharacter';
+
 
 
 
@@ -22,6 +24,10 @@ function App() {
                     <Route 
                         path="/add-character" 
                         element={isLoggedIn ? <AddCharater setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" />} 
+                    />
+                    <Route 
+                        path="/search-your-character" 
+                        element={isLoggedIn ? <SearchYourCharacter setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" />}
                     />
                 </Routes>
             </Router>

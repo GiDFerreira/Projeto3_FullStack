@@ -80,40 +80,25 @@ router.post('/', upload.single('characterImage'), async (req, res) => {
     }
 });
 
-//Listar personagem geral
-router.get('/', async(req,res) => {
-    try{
-        const limit = parseInt(req.query.limit) || 10;
-        const page = parseInt(req.query.limit) || 1;
-
-        const listCharacter = await characterService.listCharacter(limit, page);
-        res.json({
-            character: listCharacter
-        });
-    } catch (error) {
-        res.status(500).json({ message:'Error when listing character' })
-    }
-});
-
-//Listar personagem por id
-router.get('/:id', cache, async (req, res) => {
-    const { id } = req.params;
-
+//Listar personagem 
+router.get('/search', cache, async (req, res) => {
     try {
-        const character = await characterService.findCharacter(id);
+        const characters = await characterService.listCharacter();
 
-        if (!character) {
-            return res.status(404).json({ message: 'Character not found' });
+        // Verifica se a lista está vazia
+        if (!characters.length) {
+            return res.status(404).json({ message: 'No characters found' });
         }
 
-        // Armazena o dado no cache
-        await redisCache.set(`character:${id}`, JSON.stringify(character), {
-            EX: 3600  // Expiração em segundos
+        // Armazena os dados no cache (opcional)
+        await redisCache.set('all_characters', JSON.stringify(characters), {
+            EX: 3600  // Expiração em segundos (opcional)
         });
 
-        res.status(200).json(character);
+        res.status(200).json(characters);
+
     } catch (error) {
-        console.error('Error fetching character:', error);
+        console.error('Error fetching characters:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
 
@@ -121,7 +106,7 @@ router.get('/:id', cache, async (req, res) => {
 
 
 //Atualizar Personagem
-router.put('/:id', async (req,res) => {
+/*router.put('/:id', async (req,res) => {
     try{
         const characterUpdate = await characterService.characterUpdate(req.params.id, req.body);
         if (characterUpdate) {
@@ -146,6 +131,6 @@ router.delete('/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json({ message:'Error when deleting character' });
     }
-})
+})*/
 
 module.exports = router;
