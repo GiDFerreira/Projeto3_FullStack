@@ -3,17 +3,23 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 const cors = require('cors');
-const http = require('http');
+const https = require('https');
 const compression = require ('compression');
 const port = process.env.PORT || 3002;
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 const redisCache = require('./helpers/redisCache');
+const fs = require('fs');
 
 // Importação das rotas
 const loginRoutes = require('./routes/login');
 const characterRoutes = require('./routes/characterIndex');
 const { initializeUsers } = require('./models/user'); 
+
+//Chave
+const privateKey = fs.readFileSync('./certificate/key.pem', 'utf-8');
+const certificate = fs.readFileSync('./certificate/cert.pem', 'utf-8');
+const credentials = {key: privateKey, cert: certificate};
 
 
 // Variável de ambiente
@@ -67,9 +73,9 @@ app.use(function(err, req, res, next) {
 
 
 //Server Port
-const httpServer = http.createServer(app);
+const httpsServer = https.createServer(credentials, app);
 
-httpServer.listen(port, async () => {
+httpsServer.listen(port, async () => {
     console.log("Listening on: " + port);
 
     try {
