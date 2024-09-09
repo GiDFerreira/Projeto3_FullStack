@@ -29,6 +29,17 @@ module.exports = {
         return character;
     },
 
+    async listCharacter() {
+        try {
+            // Retorna todos os personagens do banco de dados
+            const characters = await characterModel.findAll();
+            return characters;
+        } catch (error) {
+            console.error('Erro ao listar personagens:', error.message);
+            throw error;
+        }
+    },
+
     /*async updateCharacter(characterId, newData) {
         const [update] = await characterModel.update(newData, {
             where: { id:characterId },

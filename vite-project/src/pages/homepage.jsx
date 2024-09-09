@@ -17,7 +17,7 @@ export function HomePage({setIsLoggedIn}) {
     const [password, setPassword] = useState('');
     
     const navigate = useNavigate();
-
+    
     
 
     const handleLogin = async () => {

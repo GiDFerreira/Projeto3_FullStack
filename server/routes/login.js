@@ -3,8 +3,18 @@ const bcrypt = require('bcrypt');
 const express = require('express');
 const router = express.Router();
 const { getUserByEmail } = require('../models/user');
+const rateLimit = require('express-rate-limit');
+const { checkData } = require('../helpers/authentication')
 
-router.post("/login", async (req, res) => {
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutos
+    max: 5, // Limita a 5 tentativas de login por IP a cada 15 minutos
+    message: 'Too many login attempts from this IP, please try again after 15 minutes',
+    standardHeaders: true, 
+    legacyHeaders: false,
+});
+
+router.post("/login", loginLimiter, checkData, async (req, res) => {
     const { email, password } = req.body;
     console.log(req.body);
     

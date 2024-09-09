@@ -2,14 +2,13 @@ import React, { useState } from "react"
 import { useNavigate } from "react-router-dom";
 
 
-
-
 export function AddCharater({setIsLoggedIn}){
     const navigate = useNavigate();
     const [characterName, setCharacterName] = useState('');
     const [characterImage, setCharacterImage] = useState(null);
     const [movies, setMovies] = useState('');
     const [series, setSeries] = useState('');
+
 
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
@@ -29,6 +28,14 @@ export function AddCharater({setIsLoggedIn}){
         formData.append('movies', movies);
         formData.append('series', series);
 
+        const token = localStorage.getItem('token');
+        console.log('Token:', token);
+
+        if (!token) {
+            alert('Token not found. Please log in again.');
+            return;
+        }
+
         try{
             for (let [key, value] of formData.entries()) {
                 console.log(`${key}: ${value}`);
@@ -37,6 +44,9 @@ export function AddCharater({setIsLoggedIn}){
             const response = await fetch('https://localhost:3002/character', {
                 method: 'POST',
                 body: formData,
+                headers: {
+                    'Authorization': `Bearer ${token}`, 
+                },
             });
             
             const data = await response.json();

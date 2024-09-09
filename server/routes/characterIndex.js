@@ -21,19 +21,17 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const cache = async (req, res, next) => {
-    const { id } = req.params;  // Supondo que você está buscando personagens por ID
-    const cacheKey = `character:${id}`;
+    const { id } = req.params; 
+    const cacheKey = id ? `character:${id}` : 'all_characters'; 
 
     try {
-        // Tenta obter dados do cache
+        //Tenta obter dados do cache
         const cachedData = await redisCache.get(cacheKey);
 
         if (cachedData) {
-            // Se houver dados no cache, retorna-os
             return res.status(200).json(JSON.parse(cachedData));
         }
 
-        // Caso contrário, continua para o próximo middleware
         next();
     } catch (error) {
         console.error('Cache middleware error:', error);
@@ -64,11 +62,12 @@ router.post('/', upload.single('characterImage'), async (req, res) => {
         const characterData = {
             characterName: req.body.characterName,  // Deve bater com o campo esperado
             image: req.file.path,  // Verifique se o path está correto
-            series: req.body.series,
-            movies: req.body.movies,
+            series: Array.isArray(series) ? series : series.split(',').map(item => item.trim()),
+            movies: Array.isArray(movies) ? movies : movies.split(',').map(item => item.trim()),
         };
 
         const newCharacter = await characterService.createCharacter(characterData);
+        await redisCache.del('all_characters');
         res.status(201).json({ message: 'Character added successfully!', character: newCharacter });
         console.log('Personagem criado:', newCharacter);
         
@@ -81,7 +80,7 @@ router.post('/', upload.single('characterImage'), async (req, res) => {
 });
 
 //Listar personagem 
-router.get('/search', cache, async (req, res) => {
+router.get('/list', cache, async (req, res) => {
     try {
         const characters = await characterService.listCharacter();
 
@@ -90,12 +89,25 @@ router.get('/search', cache, async (req, res) => {
             return res.status(404).json({ message: 'No characters found' });
         }
 
-        // Armazena os dados no cache (opcional)
-        await redisCache.set('all_characters', JSON.stringify(characters), {
-            EX: 3600  // Expiração em segundos (opcional)
+        const formattedCharacters = characters.map(character => {
+            // Certifique-se de que series e movies são arrays
+            const series = Array.isArray(character.series) ? character.series : [];
+            const movies = Array.isArray(character.movies) ? character.movies : [];
+
+            // Formatando os dados para garantir que series e movies sejam sempre arrays
+            return {
+                ...character.toJSON(),
+                series,
+                movies
+            };
         });
 
-        res.status(200).json(characters);
+        
+        await redisCache.set('all_characters', JSON.stringify(formattedCharacters), {
+            EX: 3600  
+        });
+
+        res.status(200).json(formattedCharacters);
 
     } catch (error) {
         console.error('Error fetching characters:', error);

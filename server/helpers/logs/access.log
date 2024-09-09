@@ -13,3 +13,46 @@ GET /character 404 23 - 12.885 ms {}
 GET /character 404 23 - 14.359 ms {}
 GET /favicon.ico 404 23 - 8.018 ms {}
 GET /search 404 23 - 26.996 ms {}
+GET /search 500 35 - 20.186 ms {}
+GET /search 500 35 - 11.494 ms {}
+GET /search 404 23 - 24.411 ms {}
+GET /search 404 23 - 14.104 ms {}
+GET /character 404 23 - 27.888 ms {}
+GET /character 404 23 - 12.203 ms {}
+GET /character 404 23 - 42.228 ms {}
+GET /character 404 23 - 14.046 ms {}
+GET /character/list 401 32 - 12.098 ms {}
+GET /character/list 401 32 - 14.167 ms {}
+GET /character/list 401 32 - 7.892 ms {}
+GET /character/list 401 32 - 18.303 ms {}
+GET /character/list 401 32 - 8.581 ms {}
+GET /character/list 401 32 - 7.515 ms {}
+GET /character/list 401 32 - 5.506 ms {}
+GET /character/list 401 32 - 4.271 ms {}
+POST /character 401 32 - 60.378 ms {"characterName":"mike wazowski","movies":"Mike at Work","series":"Mike Mike"}
+POST /character 401 32 - 46.246 ms {"characterName":"mike wazowski","movies":"Mike at Work","series":"Mike Mike"}
+POST /character 401 32 - 71.436 ms {"characterName":"mike wazowski","movies":"Mike at Work","series":"Mike Mike"}
+POST /character 401 32 - 96.997 ms {"characterName":"mike wazowski","movies":"Mike at Work","series":"Mike Mike"}
+POST /character 400 28 - 51.319 ms {"characterName":"mike wazowski","movies":"Mike at Work","series":"Mike Mike"}
+POST /character 400 28 - 79.837 ms {"characterName":"mike wazowski","movies":"Mike at Work","series":"Mike Mike"}
+POST /character 400 28 - 84.220 ms {"characterName":"mike wazowski","movies":"Mike at Work","series":"Mike Mike"}
+POST /character 400 28 - 52.263 ms {"characterName":"mike wazowski","movies":"Mike at Work","series":"Mike Mike"}
+POST /character 400 28 - 53.723 ms {"characterName":"mike wazowski","movies":"Mike at Work","series":"Mike Mike"}
+GET /character/list 500 35 - 17.617 ms {}
+GET /character/list 500 35 - 5.832 ms {}
+GET /uploads/1725898324015.jpg 404 23 - 14.111 ms {}
+GET /uploads/1725898324015.jpg 404 23 - 9.532 ms {}
+GET /uploads/uploads/1725898509777.jpg 404 23 - 219.889 ms {}
+GET /uploads/uploads/1725898509777.jpg 404 23 - 9.223 ms {}
+POST /character 400 164 - 80.861 ms {"characterName":"mike wazowski","movies":"Mike at Work","series":"Mike Mike"}
+GET /character/list 500 35 - 23.711 ms {}
+GET /character/list 500 35 - 15.815 ms {}
+GET /character/list 500 35 - 13.573 ms {}
+GET /character/list 500 35 - 137.771 ms {}
+GET /character/list 500 35 - 13.457 ms {}
+GET /character/list 500 35 - 6.864 ms {}
+GET /character/list 500 35 - 11.406 ms {}
+GET /character/list 500 35 - 8.465 ms {}
+GET /character/list 500 35 - 21.003 ms {}
+GET /character/list 500 35 - 14.893 ms {}
+GET /character/list 500 35 - 7.310 ms {}

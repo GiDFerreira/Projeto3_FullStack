@@ -3,6 +3,12 @@ const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = new Sequelize({
     dialect: 'sqlite',
     storage: './database.sqlite',
+    pool: {
+        max: 10, //Máx de conexões no pool
+        min: 0,  //Min de conexões no pool
+        acquire: 30000, //Temp máx em milissegundos q o pool vai tentar pegar uma conexão antes de gerar erro
+        idle: 10000, //Temp q uma conexão pode ficar ociosa antes de ser liberada
+    }
 });
 
 // Definição do modelo de usuário
@@ -39,11 +45,11 @@ const characterModel = sequelize.define('Character', {
         defaultValue: 'default.png',
     },
     series: {
-        type: DataTypes.STRING,
+        type: DataTypes.JSON,
         allowNull: false,
     },
     movies: {
-        type: DataTypes.STRING,
+        type: DataTypes.JSON,
         allowNull: false,
     }
 });

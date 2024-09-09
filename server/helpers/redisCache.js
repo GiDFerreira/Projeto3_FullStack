@@ -1,7 +1,10 @@
 const { createClient } = require('redis');
 
+
+let client;
+
 async function createRedisClient() {
-    const client = createClient();
+    client = createClient();
 
     client.on('error', (err) => console.log('Redis Client Error', err));
 
@@ -16,6 +19,6 @@ async function createRedisClient() {
 }
 
 
-const redisCache = createRedisClient();
+createRedisClient();
 
-module.exports = redisCache;
+module.exports = client;

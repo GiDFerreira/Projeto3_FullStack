@@ -8,6 +8,8 @@ export function SearchYourCharacter({setIsLoggedIn}){
     const [loading, setLoading] = useState(false); // Estado de carregamento
     const [characters, setCharacters] = useState([]); // Estado dos personagens
     const [errorMessage, setErrorMessage] = useState("");
+    
+   
 
     const handleLogout = () =>{
         localStorage.removeItem('token');
@@ -17,11 +19,22 @@ export function SearchYourCharacter({setIsLoggedIn}){
 
     const handleSearch = async () => {
         setLoading(true);
+
+
+        const token = localStorage.getItem('token');
+        console.log('Token:', token);
+
+        if (!token) {
+            alert('Token not found. Please log in again.');
+            return;
+        }
+        
         try {
-            const response = await fetch('https://localhost:3002/search',{
+            const response = await fetch('https://localhost:3002/character/list',{
                 method: 'GET',
                 headers: {
                     'Content-type' : 'application/json',
+                    'Authorization': `Bearer ${token}`,
                 },
             })
             const data = await response.json();
@@ -96,16 +109,33 @@ export function SearchYourCharacter({setIsLoggedIn}){
                             ) : (
                                 characters && characters.length > 0 && characters.map((character, index) => (
                                     <div key={index} className="divFilm bg-white rounded-lg overflow-hidden shadow-lg">
-                                        <img src={`https://localhost:3002/${character.image}`} alt={character.name} className="imgFilm w-full h-48 object-cover" />
+                                        <img src={`https://localhost:3002/${character.image}`} className="imgFilm w-full h-48 object-cover" />
                                         <div className="p-6">
-                                            <h2 className="text-lg font-semibold mb-2">{character.name}</h2>
+                                            <h2 className="text-lg font-semibold mb-2">{character.characterName}</h2>
                                             <ul className="filmUl text-gray-600 text-sm">
-                                                {character.films && character.films.length > 0 ? (
-                                                    character.films.map((film, index) => (
-                                                        <li key={index} className="filmLi">{film}</li>
-                                                    ))
+                                                {character.movies ? (
+                                                    Array.isArray(character.movies) ? (
+                                                        character.movies.map((film, index) => (
+                                                            <li key={index} className="filmLi">{film}</li>
+                                                        ))
+                                                    ) : (
+                                                        <li>Esse personagem não possui filmes</li>
+                                                    )
                                                 ) : (
-                                                    <li>Esse personagem não possui filmes</li>
+                                                    <li>Erro ao carregar filmes</li>
+                                                )}
+                                            </ul>
+                                            <ul className="seriesUl text-gray-600 text-sm mt-2">
+                                                {character.series ? (
+                                                    Array.isArray(character.series) ? (
+                                                        character.series.map((serie, index) => (
+                                                            <li key={index} className="seriesLi">{serie}</li>
+                                                        ))
+                                                    ) : (
+                                                        <li>Esse personagem não possui séries</li>
+                                                    )
+                                                ) : (
+                                                    <li>Erro ao carregar séries</li>
                                                 )}
                                             </ul>
                                             <button className="mt-4 px-4 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition duration-300">

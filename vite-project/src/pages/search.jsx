@@ -5,7 +5,6 @@ import { CharacterApiContext } from "../context/disneyApi";
 
 
 export function Search({setIsLoggedIn}){
-
     const navigate = useNavigate();
 
     const handleLogout = () =>{
@@ -28,6 +27,14 @@ export function Search({setIsLoggedIn}){
         event.preventDefault();
         const disneyCharacterInput = document.getElementById("searchinput")
         const disneyCharacter = disneyCharacterInput.value.trim().toLowerCase()
+
+        const token = localStorage.getItem('token');
+        console.log('Token:', token);
+
+        if (!token) {
+            alert('Token not found. Please log in again.');
+            return;
+        }
 
         if (disneyCharacter.length < 1 || disneyCharacter.length > 20){
             setErrorMessage("O nome do personagem deve ter entre 1 a 20 letras")

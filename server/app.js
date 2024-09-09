@@ -2,6 +2,7 @@ require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+const xss = require('xss-clean');
 const cors = require('cors');
 const https = require('https');
 const compression = require ('compression');
@@ -11,6 +12,7 @@ const upload = multer({ dest: 'uploads/' });
 const log = require('./helpers/log')
 const redisCache = require('./helpers/redisCache');
 const fs = require('fs');
+const logger = require('./helpers/logWinston');
 
 // Importação das rotas
 const loginRoutes = require('./routes/login');
@@ -26,13 +28,18 @@ var app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+//XSS clean
+app.use(xss());
 
 //Cors
 app.use(cors({
-    origin: `http://localhost:5173`,
-    methods: `GET,POST,PUT,DELETE`,
-    allowedHeaders: 'Content-Type'
+    origin: 'http://localhost:5173', 
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+    allowedHeaders: ['Authorization', 'Content-Type'], 
 }));
+
 
 //Chave SSL
 const privateKey = fs.readFileSync('./certificate/key.pem', 'utf-8');
@@ -52,6 +59,8 @@ app.use('/character', searchCharacterRoutes);
 
 // Catch Error 404
 app.use(function(req, res, next) {
+    //winston
+    logger.info(`${req.method} ${req.url}`);
     next(createError(404));
 });
 
